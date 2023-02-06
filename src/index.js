@@ -1,5 +1,6 @@
 const express = require('express');
-const talker = require('./talker');
+const talkerUsers = require('.././middleware/talker');
+const fs = require('fs').promises;
 
 const app = express();
 app.use(express.json());
@@ -16,7 +17,8 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
-app.get('/talker', async (req, res) => {
-  const user = await talker.getAllTalker();
-  res.status(200).json({user});
+app.get('/talker', async (_req, res) => {
+  const talker =  await talkerUsers.getAllTalker();
+
+  res.status(HTTP_OK_STATUS).json( talker );
 });
