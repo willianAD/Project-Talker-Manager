@@ -1,5 +1,9 @@
 const express = require('express');
 const talkerUsers = require('../middleware/talker');
+const validateAge = require('../middleware/validateAge');
+const validateLoginPassword = require('../middleware/validateLoginPassword');
+const validateLoginEmail = require('../middleware/validateLoguinEmail');
+const validateName = require('../middleware/validateName');
 
 const app = express();
 app.use(express.json());
@@ -30,7 +34,7 @@ app.get('/talker/:id', async (req, res) => {
   return res.status(200).json(talkerId);
 });
 
-app.post('/login', async (_req, res) => {
+app.post('/login', validateLoginPassword, validateLoginEmail, async (_req, res) => {
   let createToken = '';
     const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (let i = 0; i < 16; i += 1) {
@@ -39,3 +43,5 @@ app.post('/login', async (_req, res) => {
 
   return res.status(200).json({ token: createToken });
 });
+
+app.post('/talker', validateName, validateAge, async (req, res) => res.status(201).json(req.body));
