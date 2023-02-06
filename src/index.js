@@ -1,6 +1,5 @@
 const express = require('express');
-const talkerUsers = require('.././middleware/talker');
-const fs = require('fs').promises;
+const talkerUsers = require('../middleware/talker');
 
 const app = express();
 app.use(express.json());
@@ -18,7 +17,15 @@ app.listen(PORT, () => {
 });
 
 app.get('/talker', async (_req, res) => {
-  const talker =  await talkerUsers.getAllTalker();
+  const talker = await talkerUsers.getAllTalker();
 
-  res.status(HTTP_OK_STATUS).json( talker );
+  res.status(HTTP_OK_STATUS).json(talker);
+});
+
+app.get('/talker/:id', async (req, res) => {
+  const { id } = req.params;
+  const talkerId = await talkerUsers.getTalkerById(Number(id));
+
+  if (!talkerId) return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+  res.status(200).json(talkerId);
 });

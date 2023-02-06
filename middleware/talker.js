@@ -17,4 +17,9 @@ const getAllTalker = async () => {
   return talker;
 };
 
-module.exports = { getAllTalker };
+const getTalkerById = async (id) => {
+  const talker = await readTalker();
+  return talker.find((e) => e.id === id);
+};
+
+module.exports = { getAllTalker, getTalkerById };
