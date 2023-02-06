@@ -19,7 +19,7 @@ app.listen(PORT, () => {
 app.get('/talker', async (_req, res) => {
   const talker = await talkerUsers.getAllTalker();
 
-  res.status(HTTP_OK_STATUS).json(talker);
+  return res.status(HTTP_OK_STATUS).json(talker);
 });
 
 app.get('/talker/:id', async (req, res) => {
@@ -27,5 +27,15 @@ app.get('/talker/:id', async (req, res) => {
   const talkerId = await talkerUsers.getTalkerById(Number(id));
 
   if (!talkerId) return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
-  res.status(200).json(talkerId);
+  return res.status(200).json(talkerId);
+});
+
+app.post('/login', async (_req, res) => {
+  let token = '';
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 16; i += 1) {
+        token += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+    }
+
+  return res.status(200).json({ token: token});
 });
