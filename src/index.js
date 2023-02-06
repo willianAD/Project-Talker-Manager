@@ -31,11 +31,11 @@ app.get('/talker/:id', async (req, res) => {
 });
 
 app.post('/login', async (_req, res) => {
-  let token = '';
+  let createToken = '';
     const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (let i = 0; i < 16; i += 1) {
-        token += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+        createToken += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
     }
 
-  return res.status(200).json({ token: token});
+  return res.status(200).json({ token: createToken });
 });
