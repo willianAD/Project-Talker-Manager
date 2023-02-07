@@ -1,9 +1,12 @@
 const express = require('express');
 const talkerUsers = require('../middleware/talker');
-const validateAge = require('../middleware/validateAge');
 const validateLoginPassword = require('../middleware/validateLoginPassword');
 const validateLoginEmail = require('../middleware/validateLoguinEmail');
+const validateToken = require('../middleware/validateToken');
 const validateName = require('../middleware/validateName');
+const validateAge = require('../middleware/validateAge');
+const { validateTalk, validateTalkWatchedAt,
+  validateTalkRate } = require('../middleware/validateTalk');
 
 const app = express();
 app.use(express.json());
@@ -31,7 +34,7 @@ app.get('/talker/:id', async (req, res) => {
   const talkerId = await talkerUsers.getTalkerById(Number(id));
 
   if (!talkerId) return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
-  return res.status(200).json(talkerId);
+  return res.status(HTTP_OK_STATUS).json(talkerId);
 });
 
 app.post('/login', validateLoginPassword, validateLoginEmail, async (_req, res) => {
@@ -41,7 +44,44 @@ app.post('/login', validateLoginPassword, validateLoginEmail, async (_req, res) 
         createToken += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
     }
 
-  return res.status(200).json({ token: createToken });
+  return res.status(HTTP_OK_STATUS).json({ token: createToken });
 });
 
-app.post('/talker', validateName, validateAge, async (req, res) => res.status(201).json(req.body));
+app.post('/talker', validateToken, validateName, validateAge, validateTalk,
+  validateTalkWatchedAt, validateTalkRate, async (req, res) => {
+  const talkers = await talkerUsers.getAllTalker();
+  const { name, age, talk } = req.body;
+
+  const newId = await talkerUsers.getTalkerNewId();
+  const newTalker = { id: newId, name, age, talk };
+
+  talkers.push(newTalker);
+
+  await talkerUsers.writeTalker(talkers);
+
+  return res.status(201).json(newTalker);
+});
+
+// app.put('/talker/:id', async (req, res) => {
+//   const { id } = req.params;
+//   const talkerId = await talkerUsers.getTalkerById(Number(id), req.body);
+//   res.status(201).json(talkerId);
+// });
+
+// app.delete('/talker/:id', validateToken, async (req, res) => {
+//   const { id } = req.params;
+//   await talkerUsers.deleteTalker(Number(id));
+
+//   res.status(204).end();
+// });
+
+// app.get('/talker/search', validateToken, async (req, res) => {
+//   const talker = await talkerUsers.getAllTalker();
+//   const { name } = req.query;
+//   const talkerName = await talkerUsers.findTalkerByName(name);
+
+//   if (!name) {
+//     return res.status(HTTP_OK_STATUS).json(talker);
+//   }
+//   return res.status(HTTP_OK_STATUS).json([]);
+// });
