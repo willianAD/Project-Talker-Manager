@@ -73,11 +73,16 @@ app.post('/talker', validateToken, validateName, validateAge, validateTalk,
   return res.status(201).json(newTalker);
 });
 
-// app.put('/talker/:id', async (req, res) => {
-//   const { id } = req.params;
-//   const talkerId = await talkerUsers.getTalkerById(Number(id), req.body);
-//   res.status(201).json(talkerId);
-// });
+app.put('/talker/:id', validateToken, validateName, validateAge, validateTalk,
+validateTalkWatchedAt, validateTalkRate, async (req, res) => {
+  const { id } = req.params;
+  const { name, age, talk } = req.body;
+  const talkerId = await talkerUsers.updateTalker(Number(id), { name, age, talk });
+
+  if (talkerId) {
+    return res.status(HTTP_OK_STATUS).json(talkerId[0]);
+  }
+});
 
 app.delete('/talker/:id', validateToken, async (req, res) => {
   const { id } = req.params;

@@ -50,12 +50,19 @@ const deleteTalker = async (id) => {
   return writeTalker(deleteId);
 };
 
-// const updateTalker = async (id, update) => {
-//   const talker = await readTalker();
-//   const talkerUpdate = talker.find((e) => e.id === id);
-//   if (talkerUpdate) {
-//   }
-// }
+const updateTalker = async (id, update) => {
+  const talker = await readTalker();
+  const talkerUpdate = talker.filter((e) => e.id === id);
+  if (talkerUpdate.length > 0) {
+    const newTalker = talker.map((e) => {
+      if (e.id === id) return { ...e, ...update };
+      return e;
+    });
+    await writeTalker(newTalker);
+    return newTalker.filter((e) => e.id === id);
+  }
+  return false;
+};
 
 module.exports = { 
   writeTalker,
@@ -64,4 +71,5 @@ module.exports = {
   getTalkerNewId,
   findTalkerByName,
   deleteTalker,
+  updateTalker,
 };
