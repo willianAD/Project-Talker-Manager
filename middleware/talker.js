@@ -41,6 +41,15 @@ const findTalkerByName = async (query) => {
   return talker.filter((e) => e.name.toLowerCase().includes(query.toLowerCase()));
 };
 
+const deleteTalker = async (id) => {
+  const talker = await readTalker();
+  const deleteId = talker.filter((e) => e.id !== id);
+
+  console.log(deleteId);
+
+  return await writeTalker(deleteId);
+}
+
 // const updateTalker = async (id, update) => {
 //   const talker = await readTalker();
 //   const talkerUpdate = talker.find((e) => e.id === id);
@@ -48,11 +57,4 @@ const findTalkerByName = async (query) => {
 //   }
 // }
 
-// const deleteTalker = async (id) => {
-//   const talker = await readTalker();
-//   const deleteId = talker.filter((e) => e.id === id);
-
-//   return await writeTalker(deleteId);
-// }
-
-module.exports = { writeTalker, getAllTalker, getTalkerById, getTalkerNewId, findTalkerByName };
+module.exports = { writeTalker, getAllTalker, getTalkerById, getTalkerNewId, findTalkerByName, deleteTalker };

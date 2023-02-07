@@ -68,12 +68,12 @@ app.post('/talker', validateToken, validateName, validateAge, validateTalk,
 //   res.status(201).json(talkerId);
 // });
 
-// app.delete('/talker/:id', validateToken, async (req, res) => {
-//   const { id } = req.params;
-//   await talkerUsers.deleteTalker(Number(id));
+app.delete('/talker/:id', validateToken, async (req, res) => {
+  const { id } = req.params;
+  await talkerUsers.deleteTalker(Number(id));
 
-//   res.status(204).end();
-// });
+  return res.status(204).end();
+});
 
 // app.get('/talker/search', validateToken, async (req, res) => {
 //   const talker = await talkerUsers.getAllTalker();
