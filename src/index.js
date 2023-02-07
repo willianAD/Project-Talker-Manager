@@ -23,10 +23,15 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
-app.get('/talker', async (_req, res) => {
+app.get('/talker/search', validateToken, async (req, res) => {
   const talker = await talkerUsers.getAllTalker();
+  const { q } = req.query;
+  const talkerName = await talkerUsers.findTalkerByName(q);
 
-  return res.status(HTTP_OK_STATUS).json(talker);
+  if (!q) {
+    return res.status(HTTP_OK_STATUS).json(talker);
+  }
+  return res.status(HTTP_OK_STATUS).json(talkerName);
 });
 
 app.get('/talker/:id', async (req, res) => {
@@ -35,6 +40,12 @@ app.get('/talker/:id', async (req, res) => {
 
   if (!talkerId) return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
   return res.status(HTTP_OK_STATUS).json(talkerId);
+});
+
+app.get('/talker', async (_req, res) => {
+  const talker = await talkerUsers.getAllTalker();
+
+  return res.status(HTTP_OK_STATUS).json(talker);
 });
 
 app.post('/login', validateLoginPassword, validateLoginEmail, async (_req, res) => {
@@ -74,14 +85,3 @@ app.delete('/talker/:id', validateToken, async (req, res) => {
 
   return res.status(204).end();
 });
-
-// app.get('/talker/search', validateToken, async (req, res) => {
-//   const talker = await talkerUsers.getAllTalker();
-//   const { name } = req.query;
-//   const talkerName = await talkerUsers.findTalkerByName(name);
-
-//   if (!name) {
-//     return res.status(HTTP_OK_STATUS).json(talker);
-//   }
-//   return res.status(HTTP_OK_STATUS).json([]);
-// });
