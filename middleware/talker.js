@@ -47,8 +47,8 @@ const deleteTalker = async (id) => {
 
   console.log(deleteId);
 
-  return await writeTalker(deleteId);
-}
+  return writeTalker(deleteId);
+};
 
 // const updateTalker = async (id, update) => {
 //   const talker = await readTalker();
@@ -57,4 +57,11 @@ const deleteTalker = async (id) => {
 //   }
 // }
 
-module.exports = { writeTalker, getAllTalker, getTalkerById, getTalkerNewId, findTalkerByName, deleteTalker };
+module.exports = { 
+  writeTalker,
+  getAllTalker,
+  getTalkerById,
+  getTalkerNewId,
+  findTalkerByName,
+  deleteTalker,
+};
