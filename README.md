@@ -12,7 +12,7 @@ Além de treinar os conhecimentos adquiridos nesta seção, você estará criand
 
 ## Requisitos
 
-<img src="">
+<img src="https://raw.githubusercontent.com/willianAD/Project-Talker-Menager/main/image/Projeto%20Talker%20Manager.png">
 
 # Requisitos
 
