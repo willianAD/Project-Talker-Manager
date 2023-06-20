@@ -1,4 +1,4 @@
-# Talker Menager com Node.JS e Express
+# Talker Manager com Node.JS e Express
 
 ## Funcionalidades
 
